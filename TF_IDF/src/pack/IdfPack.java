@@ -16,7 +16,7 @@ public class IdfPack {
                 throws IOException, InterruptedException {
             String line[]=value.toString().split(":|\t");
             word.set(line[0]);
-            //write(word:filename, 1)
+            //write(word, 1)
             context.write(word, one);
         }
     }

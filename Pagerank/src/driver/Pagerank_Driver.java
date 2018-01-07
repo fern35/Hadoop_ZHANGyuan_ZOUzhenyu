@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -38,7 +40,7 @@ public class Pagerank_Driver {
     
     private void execute() throws Exception {
 
-    	String tempjoinPath="tempJoinPath";   	
+    	 String tempjoinPath="tempJoinPath";   	
          runprepareJob(sourceinfoPath, linkpagesPath,rankPath+"0");
          //do 30 times of calculation and for ith time save the result into "ranki"
     	 for (int i=0;i<30;i++){
@@ -142,9 +144,11 @@ public class Pagerank_Driver {
         job.setMapperClass(SortPack.SortMapper.class);
         job.setReducerClass(SortPack.SortReducer.class);
        
-        job.setSortComparatorClass(SortPack.DescComparator.class);          
+        job.setSortComparatorClass(SortPack.DescComparator.class); 
+        job.setMapOutputKeyClass(DoubleWritable.class);
+        job.setMapOutputValueClass(Text.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(Text.class);
+        job.setOutputValueClass(DoubleWritable.class);
         
         FileInputFormat.addInputPath(job, new Path(inputPath));
         FileOutputFormat.setOutputPath(job, new Path(outputPath));

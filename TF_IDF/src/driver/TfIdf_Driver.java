@@ -6,6 +6,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -148,8 +149,10 @@ public class TfIdf_Driver {
         job.setReducerClass(SortPack.SortReducer.class);
        
         job.setSortComparatorClass(SortPack.DescComparator.class);          
+        job.setMapOutputKeyClass(DoubleWritable.class);
+        job.setMapOutputValueClass(Text.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(Text.class);
+        job.setOutputValueClass(DoubleWritable.class);
         
         FileInputFormat.addInputPath(job, new Path(inputPath));
         FileOutputFormat.setOutputPath(job, new Path(outputPath));
